@@ -1,6 +1,6 @@
 # Hippo Spec
 
-Hippo Spec V2 是一个 continuation-first 的薄路由器：根任务只判断一次是否需要持久 specification，随后把固定的 `Hippo Spec Context` 交给执行者，不在每个高风险阶段重复启动完整生命周期。
+Hippo Spec V2 是一个 continuation-first 的薄路由器：根任务只判断一次是否需要持久 specification；只有工作跨执行者或跨会话时才交接固定的 `Hippo Spec Context`，不在每个高风险阶段重复启动完整生命周期。
 
 在已启用 OpenSpec 的项目中，[OpenSpec](https://github.com/Fission-AI/OpenSpec) 是唯一的行为与 change 权威。[Matt Pocock Skills](https://github.com/mattpocock/skills) 仅作为按需工程方法库，不形成第二套 spec、ticket 或流程权威。
 
@@ -10,7 +10,7 @@ Hippo Spec V2 是一个 continuation-first 的薄路由器：根任务只判断�
 |---|---|---|
 | `skip` | 清晰、局部、可逆，一个反馈循环可完成 | 不创建规划产物；状态查询、简单 review 和机械修改保持在此 |
 | `light` | 仍有一个会改变结果的关键决策未解决 | 只探索该决策，不创建持久 change |
-| `full:new` | 新增尚未记录的持久行为、公共契约、权限或所有权决策，且需要跨会话协调 | 通过项目已有 OpenSpec 流程创建最小 change |
+| `full:new` | 新增尚未记录的持久行为、公共契约、权限或所有权决策，且需要跨会话协调 | 根任务创建最小 change 一次，随后执行语义归一为 `continue` |
 | `continue` | 已有同一 intent 的 OpenSpec change | 继承 change、scope、当前切片和验收证据，不重建 proposal/design/spec/tasks |
 | `repair` | 已冻结行为中的缺陷或回归 | 复现 → 最小反馈循环 → 回归测试 → 最小修复 → 原症状验证 |
 | `review-only` | 固定 PR、commit range、diff 或 `HEAD` 的终审 | 只消费已有规范和固定代码，不修改规划产物 |
@@ -19,7 +19,7 @@ Hippo Spec V2 是一个 continuation-first 的薄路由器：根任务只判断�
 
 ## 一次判定，一路继承
 
-根任务输出一次：
+当前执行者能直接完成时，route 保持内部状态；隐式 `skip` 不输出 route 或 Context。只有工作需要跨执行者或跨会话交接时，根任务才输出：
 
 ```yaml
 hippo_spec_context:
@@ -30,7 +30,7 @@ hippo_spec_context:
   acceptance_evidence: required checks and readbacks
 ```
 
-子任务和后续执行者直接继承该上下文，不再次调用 Hippo Spec、不重新选 lane，也不自行扩大 scope。新的 intent 返回根任务另行判断。
+`full:new` 只用于根任务一次性创建 change，不会传给执行者；change 创建后，交接 Context 使用 `lane: continue`。子任务和后续执行者直接继承该上下文，不再次调用 Hippo Spec、不重新选 lane，也不自行扩大 scope。新的 intent 返回根任务另行判断。
 
 ## 工程方法与评审边界
 
@@ -55,7 +55,7 @@ npx skills@latest add hipposonCN/hippo-spec
 在 Codex 中可以明确调用：
 
 ```text
-$hippo-spec 只做一次 lifecycle 判定；优先续接已有 change，并输出可继承的 Hippo Spec Context。
+$hippo-spec 只做一次 lifecycle 判定；优先续接已有 change，仅在需要交接时输出 Hippo Spec Context。
 ```
 
 `full:new` 需要项目已经配置 OpenSpec；若尚未配置，Hippo Spec 会先征求授权，不会自行初始化。

@@ -1,6 +1,6 @@
 # Optional engineering discipline
 
-Read only the section that matches the current stage in the inherited `Hippo Spec Context`. These methods adapt complementary parts of Matt Pocock's engineering skills without making them a runtime dependency or a second specification, ticket, lifecycle, or completion authority.
+Read only the section that matches the current stage and, when work was handed off, the inherited `Hippo Spec Context`. These methods adapt complementary parts of Matt Pocock's engineering skills without making them a runtime dependency or a second specification, ticket, lifecycle, or completion authority.
 
 If a named method skill is installed, it may help execute that stage. If it is absent, use the compact fallback below and continue.
 
@@ -30,7 +30,7 @@ Fallback:
 2. Add one focused test that fails for the missing behavior.
 3. Add the smallest implementation that makes it pass.
 4. Run the narrow test and relevant static check.
-5. Stop when the inherited `current_slice` and acceptance evidence pass.
+5. Stop when the current slice and acceptance evidence pass; inherit them from the context when one was handed off.
 
 Test public behavior rather than private structure. Do not create a new seam unless it removes a concrete testability or ownership constraint.
 
@@ -68,7 +68,7 @@ Unsupported suggestions, subjective code smells, style preferences not grounded 
 - In an OpenSpec project, do not default to Matt's `to-spec`, `to-tickets`, or full `implement` chain.
 - Invoke `domain-modeling`, `tdd`, `diagnosing-bugs`, or `code-review` only for its matching stage and only when installed.
 - Do not install a method skill, add a dependency, or stop execution merely because an optional method is absent.
-- Do not reroute, change `active_change`, or expand `scope_lock`; return a material conflict to the root task or user.
+- When a `Hippo Spec Context` is present, do not reroute, change `active_change`, or expand `scope_lock`; return a material conflict to the root task or user.
 - Keep artifact truth, implementation truth, and operational truth separate. A commit, passing test, review, or OpenSpec checkbox does not prove activation or fresh readback.
 
 Method source: [Matt Pocock Skills](https://github.com/mattpocock/skills). The routing, authority, and completion boundaries are Hippo-specific adaptations.

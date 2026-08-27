@@ -1,4 +1,4 @@
 interface:
   display_name: "Hippo Spec"
   short_description: "优先续接已有 change，只在必要时新建持久 specification"
-  default_prompt: "使用 $hippo-spec 只做一次 lifecycle 判定；优先续接已有 change，并输出可继承的 Hippo Spec Context。"
+  default_prompt: "使用 $hippo-spec 只做一次 lifecycle 判定；优先续接已有 change，仅在需要跨执行者或会话交接时输出 Hippo Spec Context。"

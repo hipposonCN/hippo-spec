@@ -1,11 +1,11 @@
 ---
 name: hippo-spec
-description: Continuation-first router that decides once whether software work needs persistent specification, then selects skip, light, full:new, continue, repair, or review-only and passes a fixed Hippo Spec Context to execution. Use when starting or resuming substantive work, repairing frozen behavior, or reviewing a fixed PR/diff. Do not use for status queries, simple reviews, or mechanical edits unless explicitly invoked.
+description: Continuation-first router that decides once whether software work needs persistent specification, selects skip, light, full:new, continue, repair, or review-only, and passes a fixed Hippo Spec Context only across executor or session boundaries. Use when starting or resuming substantive work, repairing frozen behavior, or reviewing a fixed PR/diff. Do not use for status queries, simple reviews, or mechanical edits unless explicitly invoked.
 ---
 
 # Hippo Spec
 
-Act as a thin root router. Decide the lifecycle once, hand execution a fixed context, and stop routing. Do not restart a lifecycle merely because later work is cross-repository, security-sensitive, release-related, or has several validation layers.
+Act as a thin root router. Decide the lifecycle once, keep the decision local unless handoff is needed, and stop routing. Do not restart a lifecycle merely because later work is cross-repository, security-sensitive, release-related, or has several validation layers.
 
 ## Authority
 
@@ -30,26 +30,30 @@ Cross-repository scope, security, release work, migrations, or multiple validati
 
 When explicitly invoked, report `Hippo Spec: <lane> — <short reason>`. When selected implicitly, keep `skip` silent; announce any other lane once.
 
-## Emit the handoff context
+## Hand off only when needed
 
-After routing, provide one compact context and pass it unchanged to every executor:
+Keep the decision internal when the current executor can finish the work. A locally handled implicit `skip` emits neither a route announcement nor a context.
+
+When work crosses an executor or session boundary, pass one compact context:
 
 ```yaml
 hippo_spec_context:
-  lane: skip | light | full:new | continue | repair | review-only
+  lane: skip | light | continue | repair | review-only
   active_change: <exact change/spec id or none>
   scope_lock: <authorized files, systems, and explicit exclusions>
   current_slice: <single immediate objective>
   acceptance_evidence: <checks and readbacks required for this slice>
 ```
 
-Child tasks and later executors inherit this context. They must not call Hippo Spec, select another lane, or enlarge scope. A new intent requires a separate root decision rather than recursive routing.
+`full:new` is a root-only bootstrap, never an executor lane. Create the exact OpenSpec change once, then continue the work or hand it off with `lane: continue`; this one-way transition is not another lifecycle decision.
+
+Recipients inherit the context unchanged for that slice. They must not call Hippo Spec, select another lane, or enlarge scope. A new intent requires a separate root decision rather than recursive routing.
 
 ## Execute the lane
 
 - **skip**: make the smallest change, run the single relevant feedback loop, and stop. Create no planning artifact.
 - **light**: explore only the unresolved decision, report the result, and stop. Create no persistent change or implementation plan; any later implementation starts as a separate root request.
-- **full:new**: use the project's installed OpenSpec workflow and schema. If OpenSpec is absent, ask before initialization; never invent a parallel authority. Read [references/full-lifecycle.md](references/full-lifecycle.md).
+- **full:new**: at the root, use the project's installed OpenSpec workflow and schema to create the change exactly once, then proceed as `continue`. If OpenSpec is absent, ask before initialization; never invent a parallel authority or delegate `full:new`. Read [references/full-lifecycle.md](references/full-lifecycle.md).
 - **continue**: load the exact existing change and continue `current_slice`. Inherit `active_change`, `scope_lock`, and acceptance evidence; do not recreate proposal, design, specs, or the task tree. Read [references/full-lifecycle.md](references/full-lifecycle.md).
 - **repair**: reproduce the frozen-behavior defect, build the smallest feedback loop, add a regression test at the correct seam, apply the minimum fix, and verify the original symptom. Do not start a new lifecycle for the bug.
 - **review-only**: pin the fixed point, review once against the existing spec and repository rules, and do not create or modify planning artifacts.

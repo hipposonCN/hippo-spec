@@ -26,9 +26,9 @@ Select `full:new` only when both conditions hold:
 
 Risk, repository count, deployment, release, migration, or validation count does not satisfy condition 1 by itself.
 
-When `full:new` is selected, use the project's installed OpenSpec workflow and schema to create the minimum coherent change. OpenSpec owns the behavior delta and tasks. GitHub issues may reference the change and assign work, but must not restate requirements or become a parallel task authority. If the project has no OpenSpec installation, request authorization before initializing it; do not substitute another specification system.
+When `full:new` is selected, the root uses the project's installed OpenSpec workflow and schema to create the minimum coherent change exactly once. OpenSpec owns the behavior delta and tasks. GitHub issues may reference the change and assign work, but must not restate requirements or become a parallel task authority. If the project has no OpenSpec installation, request authorization before initializing it; do not substitute another specification system.
 
-Once the change exists, emit a `Hippo Spec Context` with that exact `active_change`. Every later slice uses `continue` without another lifecycle assessment.
+Do not delegate `full:new`. Once the change exists, the remaining work uses `continue` without another lifecycle assessment. If work crosses an executor or session boundary, emit a `Hippo Spec Context` with `lane: continue` and that exact `active_change`. This is the defined result of the bootstrap, not a reroute.
 
 ## Preserve the three truths
 
