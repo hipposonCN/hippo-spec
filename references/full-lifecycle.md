@@ -1,66 +1,43 @@
-# Full Hippo Spec lifecycle
+# Persistent specification routes
 
-Use this only for the `full` lane.
+Use this reference only after the root selected `full:new` or `continue`. Do not route again here.
 
-## 1. Locate the planning truth
+## Prefer continuation
 
-Read the repository instructions, current specs, active changes, project validation commands, and release or runtime boundaries that affect the request. Use OpenSpec status and instruction output when available instead of guessing paths or required artifacts.
+Inspect existing OpenSpec changes and main specs before creating anything. Select `continue` whenever one change already owns the same intent, even if the current slice is cross-repository, security-sensitive, a migration, a release, or needs several validations.
 
-Before creating anything, compare the request with active changes:
+For `continue`:
 
-- Reuse and update a change when the intent and acceptance target are the same.
-- Start a new change when the intent differs, the old change can finish independently, or combining them would create unrelated acceptance paths.
-- For a multi-month program, prefer several independently verifiable and archivable changes over one permanent mega-change. Keep an umbrella map only in an existing project planning surface when coordination actually needs one.
+- bind `active_change` to the exact existing change;
+- preserve its scope and normative behavior;
+- set `current_slice` to the next incomplete, independently verifiable slice;
+- carry forward the exact acceptance evidence already required, adding release/readback proof when the slice needs it;
+- read the change through the project's installed OpenSpec status/instruction surface;
+- do not regenerate proposal, design, specs, or the task tree.
 
-## 2. Reach agreement before implementation
+If implementation exposes a genuinely different intent or an unrecorded public behavior decision, stop and return it to the root or user. Do not recursively call Hippo Spec or silently widen the current change.
 
-Capture only information that changes implementation or acceptance:
+## Create only when the gate is complete
 
-- the user-visible problem and intended outcome;
-- actors and ownership boundaries;
-- current behavior and the intended delta;
-- explicit non-goals;
-- risky or hard-to-reverse decisions;
-- the evidence required to call each milestone complete.
+Select `full:new` only when both conditions hold:
 
-Use the repository's OpenSpec schema and generated instructions. In the usual spec-driven schema:
+1. the request introduces new, unrecorded persistent behavior, a public contract, permission, or ownership decision; and
+2. coordinating that decision and its implementation requires more than one session.
 
-- proposal records why, scope, and impact;
-- delta specs record normative behavior and scenarios;
-- design records technical boundaries and consequential decisions;
-- tasks are dependency-ordered vertical slices with observable acceptance.
+Risk, repository count, deployment, release, migration, or validation count does not satisfy condition 1 by itself.
 
-Do not duplicate these artifacts in GitHub issues. Issues may link to the change and track ownership, but OpenSpec remains the behavior authority.
+When `full:new` is selected, use the project's installed OpenSpec workflow and schema to create the minimum coherent change. OpenSpec owns the behavior delta and tasks. GitHub issues may reference the change and assign work, but must not restate requirements or become a parallel task authority. If the project has no OpenSpec installation, request authorization before initializing it; do not substitute another specification system.
 
-## 3. Implement in verified slices
+Once the change exists, emit a `Hippo Spec Context` with that exact `active_change`. Every later slice uses `continue` without another lifecycle assessment.
 
-Work one narrow end-to-end slice at a time. Prefer an existing public seam; create a new seam only when it removes a concrete testability or ownership constraint. Update artifacts when implementation reveals that an agreed assumption is wrong. Do not quietly narrow scope or mark deferred work complete.
+## Preserve the three truths
 
-Use the relevant method in `engineering-discipline.md`:
+- **Artifact truth** proves the authoritative specification is present, current, and structurally valid.
+- **Implementation truth** proves the scoped behavior exists and focused tests or checks pass.
+- **Operational truth** proves the intended package, release, process, external state, receipt, or fresh readback is active when the specification requires it.
 
-- domain modeling when terminology or ownership changes;
-- vertical-slice TDD for observable behavior;
-- the diagnosis loop for a hard defect;
-- two-axis review before final acceptance.
+High-risk execution affects `acceptance_evidence`; it does not create a new lifecycle. Keep source, commit, PR, merge, release, activation, and readback as separate states when the project distinguishes them.
 
-## 4. Verify three different truths
+## Finish the active change
 
-Keep these checks distinct:
-
-1. **Artifact truth**: OpenSpec artifacts are structurally valid and internally coherent.
-2. **Implementation truth**: code and tests satisfy every requirement and scenario in scope.
-3. **Operational truth**: the intended package, release, process, external state, or receipt is actually active and freshly readable when the project requires it.
-
-Run the project's narrow checks during each slice and its full required gate at the end. OpenSpec validation does not replace tests or operational proof.
-
-## 5. Close without sediment
-
-Before archive:
-
-- every checked task has evidence;
-- implementation has been reviewed against both the change and repository standards;
-- required runtime or external acceptance is complete;
-- delta specs are reconciled with current specs using the installed OpenSpec workflow;
-- remaining follow-up work has a separate intent and change.
-
-Archive promptly once these conditions hold. If many completed changes have accumulated, audit them individually before using any bulk-archive capability.
+Mark a task complete only when its specified behavior and evidence exist. Run one final fixed-scope review when required, then verify only cited blockers after repairs. Sync or archive through the installed OpenSpec workflow only after all applicable truth layers pass. Follow-up work with a different intent returns to the root as a separate decision.

@@ -1,4 +1,4 @@
 interface:
   display_name: "Hippo Spec"
-  short_description: "先判断复杂度，再编排 OpenSpec 与工程执行纪律"
-  default_prompt: "使用 $hippo-spec 先判断项目应该走 skip、light 还是 full，再采用最小合适流程。"
+  short_description: "优先续接已有 change，只在必要时新建持久 specification"
+  default_prompt: "使用 $hippo-spec 只做一次 lifecycle 判定；优先续接已有 change，并输出可继承的 Hippo Spec Context。"

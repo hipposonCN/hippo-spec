@@ -1,53 +1,73 @@
 ---
 name: hippo-spec
-description: Assess and orchestrate substantial software work by choosing no spec, lightweight exploration, or a full OpenSpec lifecycle, then adding domain modeling, vertical-slice TDD, diagnosis, and two-axis review only when useful. Use for multi-session initiatives, cross-module or cross-repo changes, migrations, new domain behavior, risky releases, or when the user asks whether a project needs a spec. Do not use for ordinary small fixes, simple answers, or status checks.
+description: Continuation-first router that decides once whether software work needs persistent specification, then selects skip, light, full:new, continue, repair, or review-only and passes a fixed Hippo Spec Context to execution. Use when starting or resuming substantive work, repairing frozen behavior, or reviewing a fixed PR/diff. Do not use for status queries, simple reviews, or mechanical edits unless explicitly invoked.
 ---
 
 # Hippo Spec
 
-Use the minimum process that makes the work safer and easier to finish. OpenSpec remains the durable behavior and change ledger; engineering methods improve how the change is discovered, implemented, and verified.
+Act as a thin root router. Decide the lifecycle once, hand execution a fixed context, and stop routing. Do not restart a lifecycle merely because later work is cross-repository, security-sensitive, release-related, or has several validation layers.
 
-## Start with a read-only fit check
+## Authority
 
-Inspect the request and readily available project evidence before creating planning files. Reuse an existing change when it has the same intent.
+- In a project that uses OpenSpec, its main specs and selected change are the sole behavior authority. Issues may link work or ownership but must not duplicate the spec or task tree.
+- Matt Pocock skills are optional engineering methods, not a specification, ticket, lifecycle, or completion authority.
+- Artifact truth, implementation truth, and operational truth are distinct. A valid spec, passing code, and an active release/readback prove different states.
 
-Choose one lane:
+## Route once at the root
 
-- **skip**: The outcome is clear, local, reversible, and realistically finishable in one focused session with one feedback loop.
-- **light**: The work has meaningful uncertainty, touches several modules, or may outgrow one session, but does not yet justify durable change artifacts. Explore and settle the important branches without creating a change.
-- **full**: Use when any hard trigger exists: work spans repositories, runtimes, or owners; changes persistent data or a public contract; includes migration, release, security, permissions, money, or irreversible external state; needs multiple sessions or independently accepted milestones; or requires several distinct proofs before it can truthfully be called complete. Also use full when two or more light signals remain after a brief inspection.
+If a `Hippo Spec Context` is already present, accept it and execute its `current_slice`. Do not invoke Hippo Spec again, reconsider the lane, recreate planning artifacts, or expand `scope_lock`. Return a material scope conflict to the root task or user.
 
-When explicitly invoked, report `Hippo Spec: skip|light|full — <short reason>`. When selected implicitly, say nothing for `skip`; for `light` or `full`, state the lane and reason before proceeding. Ask a question only when a missing decision materially changes the lane or solution.
+Otherwise inspect the request and existing project artifacts without writing, then choose exactly once in this order:
 
-## Keep each artifact authoritative
+1. **review-only** — a final review of a fixed PR, commit range, diff, or `HEAD`; consume the existing spec and fixed code only.
+2. **repair** — a defect or regression under already frozen behavior.
+3. **continue** — an OpenSpec change with the same intent already exists. This is the default for its next slice, including release and cross-repository work.
+4. **full:new** — only when both are true: the request introduces new, unrecorded persistent behavior, a public contract, permission, or ownership decision; and the work needs cross-session coordination.
+5. **light** — a key product, behavior, permission, or ownership decision is still unresolved and short exploration can settle it; create no persistent change.
+6. **skip** — clear, local, reversible work that fits one feedback loop. Status queries, simple reviews, and mechanical edits stay here and never escalate by risk vocabulary alone.
 
-- Main OpenSpec specs describe agreed current behavior.
-- One selected OpenSpec change describes the intended delta. Do not create a parallel spec in an issue, plan, or chat summary.
-- `CONTEXT.md` is a glossary, not a behavior spec. Add terms only when a real ambiguity has been resolved.
-- ADRs explain hard-to-reverse, surprising trade-offs. Do not use them as task lists.
-- Tasks describe independently verifiable implementation slices.
-- Tests, receipts, release identity, and fresh readback prove implementation or activation. OpenSpec validation and checked boxes alone do not.
+Cross-repository scope, security, release work, migrations, or multiple validations alone do not trigger `full:new`. When the same intent is already specified, keep `continue` and add those proofs to `acceptance_evidence`.
 
-If artifacts, source, and live behavior disagree, surface the divergence. Do not silently rewrite one to match another or claim a later completion state.
+When explicitly invoked, report `Hippo Spec: <lane> — <short reason>`. When selected implicitly, keep `skip` silent; announce any other lane once.
 
-## Run the selected lane
+## Emit the handoff context
 
-### Skip
+After routing, provide one compact context and pass it unchanged to every executor:
 
-Make the smallest coherent change, run the narrow relevant check, and stop. Do not initialize OpenSpec or create planning documents.
+```yaml
+hippo_spec_context:
+  lane: skip | light | full:new | continue | repair | review-only
+  active_change: <exact change/spec id or none>
+  scope_lock: <authorized files, systems, and explicit exclusions>
+  current_slice: <single immediate objective>
+  acceptance_evidence: <checks and readbacks required for this slice>
+```
 
-### Light
+Child tasks and later executors inherit this context. They must not call Hippo Spec, select another lane, or enlarge scope. A new intent requires a separate root decision rather than recursive routing.
 
-Explore in conversation, or use the project's OpenSpec explore capability when already installed. Resolve only decisions that branch the outcome: user value, scope, key terms, constraints, and acceptance evidence. Promote to `full` if a hard trigger appears; otherwise proceed without durable artifacts.
+## Execute the lane
 
-### Full
+- **skip**: make the smallest change, run the single relevant feedback loop, and stop. Create no planning artifact.
+- **light**: explore only the unresolved decision, report the result, and stop. Create no persistent change or implementation plan; any later implementation starts as a separate root request.
+- **full:new**: use the project's installed OpenSpec workflow and schema. If OpenSpec is absent, ask before initialization; never invent a parallel authority. Read [references/full-lifecycle.md](references/full-lifecycle.md).
+- **continue**: load the exact existing change and continue `current_slice`. Inherit `active_change`, `scope_lock`, and acceptance evidence; do not recreate proposal, design, specs, or the task tree. Read [references/full-lifecycle.md](references/full-lifecycle.md).
+- **repair**: reproduce the frozen-behavior defect, build the smallest feedback loop, add a regression test at the correct seam, apply the minimum fix, and verify the original symptom. Do not start a new lifecycle for the bug.
+- **review-only**: pin the fixed point, review once against the existing spec and repository rules, and do not create or modify planning artifacts.
 
-Read [references/full-lifecycle.md](references/full-lifecycle.md). Use the project's installed OpenSpec workflow and schema rather than hand-inventing artifact shapes. If OpenSpec is absent, explain why full planning is warranted and ask before initializing or adding its project files.
+Read only the relevant section of [references/engineering-discipline.md](references/engineering-discipline.md). Use [references/routing-examples.md](references/routing-examples.md) only when classification is ambiguous or this Skill is being validated.
 
-During clarification, implementation, debugging, or review, read only the relevant part of [references/engineering-discipline.md](references/engineering-discipline.md).
+## Optional engineering methods
 
-## Preserve real completion gates
+In OpenSpec projects, do not default to Matt's `to-spec`, `to-tickets`, or full `implement` chain. Invoke `diagnosing-bugs`, `tdd`, `domain-modeling`, or `code-review` only for its matching stage and only when installed. There is no runtime dependency on Matt skills; use the compact fallback in `engineering-discipline.md` when absent.
 
-Discover the project's own completion chain before implementation. A typical chain may include source change, targeted tests, full validation, package or release creation, process activation, and fresh receipt/readback. Keep these states separate.
+Review findings block only when backed by a reproducible test failure, an explicitly cited missing specified behavior, or an explicitly cited repository-rule violation. Unsupported suggestions and subjective code smells are non-blocking. Run the final two-axis review once; after a fix, recheck only the cited evidence rather than repeating open-ended review until no suggestions remain.
 
-Mark an OpenSpec task complete only after its stated behavior and evidence exist. Verify the complete change against specs and project checks before syncing or archiving. Never bulk-archive merely because every checkbox is marked.
+## Completion boundary
+
+Discover which truth layers the slice requires:
+
+- **artifact truth**: the authoritative spec/change is present, current, and valid;
+- **implementation truth**: the required behavior exists and its focused checks pass;
+- **operational truth**: the intended release, process, external state, receipt, or fresh readback is active when applicable.
+
+Call the root task complete only when every applicable layer has its stated evidence. A commit, PR, merge, checked task, or passing test does not substitute for release/readback evidence when operational truth is in scope.
