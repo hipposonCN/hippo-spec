@@ -7,6 +7,9 @@ Use these to validate decisions, not as another task ledger. Judge the resulting
 | Correct one sentence in a README | Make the edit and check it; no proposal, handoff context, test scaffold, or extra confirmation. |
 | Change a documented API default in one session | Update the existing behavior authority and verify the new default; session length does not waive the spec delta. |
 | Add durable behavior to a project without OpenSpec | Use its current documentation/task convention, or one concise local record if needed; no framework installation or duplicate ledger. |
+| Only Hippo Spec is installed; a hard defect or domain-language change needs specialized guidance | Read the matching bundled reference and complete the authorized work using available repository tools; no external skill lookup, install, or source fetch. |
+| Complete a selected change in an existing OpenSpec layout without its CLI | Apply and verify the authorized behavior, synchronize the selected Markdown delta, and archive when applicable evidence is complete; preserve unrelated requirements and changes. |
+| A legacy repository requires an unavailable OpenSpec CLI validation check | Report the unmet gate; do not claim manual review is strict CLI validation, install silently, or remove the check outside a scoped migration. |
 | Diagnose and fix a defect; the cause is initially unclear | Investigate and continue the authorized fix once understood; do not require a new request to exit `light`. |
 | Explain a defect; user explicitly requests read-only diagnosis | Report evidence and cause without implementing a repair. |
 | A same-title old change is superseded; the current request concerns its replacement | Use the effective replacement; do not resume the old unchecked tasks. |

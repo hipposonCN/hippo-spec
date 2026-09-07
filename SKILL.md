@@ -7,11 +7,13 @@ description: Deliver bounded software changes using current specs, short feedbac
 
 Carry the user's requested outcome through implementation and applicable closeout. Keep the scope bounded, let evidence refine the approach, and use the least process that preserves correctness.
 
+This skill is self-contained. Use its bundled references and the host's normal repository tools; no OpenSpec CLI, Matt Pocock skills, external templates, or network setup is required by this workflow.
+
 ## Establish the working boundary
 
 Infer the requested result, authorized scope, and completion evidence from the conversation and relevant project artifacts. Ask only for a missing decision that materially changes the outcome or authorization. Diagnosis, a verified patch, and an activated release are different deliverables.
 
-Use one behavior and task authority: OpenSpec where the project uses it; otherwise the project's existing spec, documentation, or issue convention. Do not initialize a framework or create a second ledger merely to use this skill. A historical plan does not authorize work or override the user's current request. Code and runtime evidence describe what exists, not what the user intended.
+Use one behavior and task authority in the project's existing spec, documentation, or issue convention. Existing OpenSpec Markdown remains usable as project records without installing its framework. Do not initialize another framework or create a second ledger. A historical plan does not authorize work or override the user's current request. Code and runtime evidence describe what exists, not what the user intended.
 
 Reuse a change only when it is still effective, not superseded, and its remaining work matches this request. Inspect the relevant authority and revision; do not audit the entire historical backlog on every task. Read [references/full-lifecycle.md](references/full-lifecycle.md) when selecting, updating, or closing a persistent record.
 
@@ -37,7 +39,7 @@ These modes describe work, not locked phases. Do not repeat planning on routine 
 - Prefer one thin, observable slice through the necessary layers. Change an adjacent module only when required for that slice. Respect explicit file allowlists; otherwise a newly discovered relevant file is not itself a reason to restart planning.
 - Keep unrelated improvements outside this change. Do not append speculative features or tickets. Continue the slices needed for the requested outcome, then stop; finishing one slice does not finish an explicitly requested larger deliverable.
 
-Use short behavior-level feedback loops and proportional review. For hard diagnosis or domain-model changes, select the matching installed Matt Pocock method through [references/engineering-discipline.md](references/engineering-discipline.md). Use its fallback when absent; preserve this assignment's scope, authorization, and single behavior authority.
+Use short behavior-level feedback loops and proportional review through [references/engineering-discipline.md](references/engineering-discipline.md). For hard diagnosis or domain-model changes, it routes to bundled methods. Read only the needed reference and use it directly, without an external skill lookup or installation. These methods inherit this assignment's scope, authorization, and single behavior authority.
 
 ## Hand off the same assignment
 
