@@ -1,74 +1,55 @@
 # Hippo Spec
 
-Hippo Spec V2 是一个 continuation-first 的薄路由器：根任务只判断一次是否需要持久 specification；只有工作跨执行者或跨会话时才交接固定的 `Hippo Spec Context`，不在每个高风险阶段重复启动完整生命周期。
+Hippo Spec 统一接住软件需求，选择最小工作方式，并依据证据完成收口。目标和权限有边界，设计可以随证据更新；流程不会因跨仓库、会话切换或发布而反复重启。
 
-在已启用 OpenSpec 的项目中，[OpenSpec](https://github.com/Fission-AI/OpenSpec) 是唯一的行为与 change 权威。[Matt Pocock Skills](https://github.com/mattpocock/skills) 仅作为按需工程方法库，不形成第二套 spec、ticket 或流程权威。
+## 使用原则
 
-## 六条路径
+- 先明确本轮交付结果：诊断、修复、合并或上线，按实际授权推进。
+- 只维护一份行为与任务权威。已有 OpenSpec 的项目继续使用 OpenSpec；其他项目沿用现有文档或任务约定，无须安装框架。
+- 行为变化决定是否更新规范，会话数量只决定是否需要交接。
+- 只续接仍有效、未被替代且符合本轮范围的 change。历史任务不会自动成为本轮待办。
+- 新证据可以修正设计假设和任务顺序，但不能自行增加功能、扩大权限或放宽验收。
+- 通过短反馈循环验证行为；只在实际需要时增加集成检查、独立评审和运行回读。
+- 完成本轮要求后，同步相应规范和任务状态；只关闭有证据完成或明确被替代的工作。
 
-| 路径 | 适用情况 | 行为 |
-|---|---|---|
-| `skip` | 清晰、局部、可逆，一个反馈循环可完成 | 不创建规划产物；状态查询、简单 review 和机械修改保持在此 |
-| `light` | 仍有一个会改变结果的关键决策未解决 | 只探索该决策，不创建持久 change |
-| `full:new` | 新增尚未记录的持久行为、公共契约、权限或所有权决策，且需要跨会话协调 | 根任务创建最小 change 一次，随后执行语义归一为 `continue` |
-| `continue` | 已有同一 intent 的 OpenSpec change | 继承 change、scope、当前切片和验收证据，不重建 proposal/design/spec/tasks |
-| `repair` | 已冻结行为中的缺陷或回归 | 复现 → 最小反馈循环 → 回归测试 → 最小修复 → 原症状验证 |
-| `review-only` | 固定 PR、commit range、diff 或 `HEAD` 的终审 | 只消费已有规范和固定代码，不修改规划产物 |
+## 工作模式
 
-路由优先续接既有 intent。跨仓库、安全、发布、迁移或多项验证本身都不会触发 `full:new`；它们只改变当前切片需要的验收证据。
+| 模式 | 用途 |
+|---|---|
+| `skip` | 不改变行为契约的清晰局部修改，直接做并检查 |
+| `light` | 调查问题并答复，随后继续已授权实施；只读诊断不修改文件 |
+| `repair` | 复现已有行为的缺陷，最小修复并验证原症状 |
+| `continue` | 接续有效 change 的下一段授权工作 |
+| `full:new` | 记录尚未覆盖的行为差异，优先更新现有记录，然后进入 `continue` |
+| `review-only` | 评审固定代码范围，报告发现，不修改实现或规划 |
 
-## 一次判定，一路继承
+模式描述当前工作，不是必须逐一通过的关卡。普通修改不需要输出路由表或建立任务文件。跨执行者或会话时，才传递已有的 `Hippo Spec Context`：有效记录、范围、当前切片和验收证据。
 
-当前执行者能直接完成时，route 保持内部状态；隐式 `skip` 不输出 route 或 Context。只有工作需要跨执行者或跨会话交接时，根任务才输出：
+难定位的缺陷、间歇性故障或性能回退，优先使用已安装的 Matt Pocock [`diagnosing-bugs`](https://github.com/mattpocock/skills/tree/main/skills/engineering/diagnosing-bugs)；定义或修改领域术语、实体关系、责任边界时，优先使用 [`domain-modeling`](https://github.com/mattpocock/skills/tree/main/skills/engineering/domain-modeling)。普通修改不必启动这些方法。技能缺失时使用内置精简指引，Hippo Spec 始终保留本轮范围、授权与收口规则。
 
-```yaml
-hippo_spec_context:
-  lane: continue
-  active_change: exact-change-id
-  scope_lock: authorized files and exclusions
-  current_slice: one immediate objective
-  acceptance_evidence: required checks and readbacks
+[OpenSpec](https://github.com/Fission-AI/OpenSpec) 项目使用其已有 schema 与同步、归档机制，不另建 spec/ticket 流程。领域词汇和 ADR 保存术语与决策理由，不替代行为规范。
+
+## 完成意味着什么
+
+需要留档时，规范应反映已授权的行为；需要实现时，行为应通过相应检查；要求上线或交付时，应取得运行或外部回读证据。任务勾选和测试通过不能代替后者。
+
+一个已验收的小切片可以关闭，所属大 change 可以保留；若用户要求完成整个 change，就应继续剩余的授权工作。被替代的任务记录替代原因与去向，不能假装已实现。历史清理不自动并入本轮。
+
+## 调用
+
+正常描述任务即可，也可以明确调用：
+
+```text
+$hippo-spec 按现有规范完成这个改动；必要时随证据调整方案，保持范围，并用适用的验收证据收口。
 ```
 
-`full:new` 只用于根任务一次性创建 change，不会传给执行者；change 创建后，交接 Context 使用 `lane: continue`。子任务和后续执行者直接继承该上下文，不再次调用 Hippo Spec、不重新选 lane，也不自行扩大 scope。新的 intent 返回根任务另行判断。
-
-## 工程方法与评审边界
-
-`domain-modeling`、`tdd`、`diagnosing-bugs` 和 `code-review` 仅在对应阶段且已安装时使用；缺失时使用内置精简 fallback。在 OpenSpec 项目中不默认运行 Matt 的 `to-spec`、`to-tickets` 或完整 `implement` 链，也不增加强制运行时依赖。
-
-Review finding 只有在包含可复现测试失败、明确引用规范的行为缺失，或明确引用仓库规则的违规时才阻塞。无证据建议和主观 code smell 不阻塞；最终双轴 review 原则上只运行一次，修复后只复查对应证据。
-
-## 完成边界
-
-- **artifact truth**：权威 specification/change 已存在且有效；
-- **implementation truth**：实现满足当前切片并通过对应检查；
-- **operational truth**：需要时，目标 release、进程、外部状态、receipt 或 fresh readback 已生效。
-
-三者不能互相替代。commit、PR、merge、测试通过或任务勾选都不自动证明发布和 readback 完成。
-
-## 安装
+安装：
 
 ```bash
 npx skills@latest add hipposonCN/hippo-spec
 ```
 
-在 Codex 中可以明确调用：
-
-```text
-$hippo-spec 只做一次 lifecycle 判定；优先续接已有 change，仅在需要交接时输出 Hippo Spec Context。
-```
-
-`full:new` 需要项目已经配置 OpenSpec；若尚未配置，Hippo Spec 会先征求授权，不会自行初始化。
-
-## 仓库结构
-
-```text
-SKILL.md
-agents/openai.yaml
-references/full-lifecycle.md
-references/engineering-discipline.md
-references/routing-examples.md
-```
+技能入口见 [SKILL.md](SKILL.md)；行为验证样例见 [routing-examples.md](references/routing-examples.md)。
 
 ## License
 
