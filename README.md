@@ -25,7 +25,9 @@ Hippo Spec 统一接住软件需求，选择最小工作方式，并依据证据
 
 模式描述当前工作，不是必须逐一通过的关卡。普通修改不需要输出路由表或建立任务文件。跨执行者或会话时，才传递已有的 `Hippo Spec Context`：有效记录、范围、当前切片和验收证据。
 
-[Matt Pocock Skills](https://github.com/mattpocock/skills) 的诊断、领域建模、行为测试和评审方法可以按需使用，缺失时有内置精简指引。[OpenSpec](https://github.com/Fission-AI/OpenSpec) 项目使用其已有 schema 与同步、归档机制，不另建 spec/ticket 流程。
+难定位的缺陷、间歇性故障或性能回退，优先使用已安装的 Matt Pocock [`diagnosing-bugs`](https://github.com/mattpocock/skills/tree/main/skills/engineering/diagnosing-bugs)；定义或修改领域术语、实体关系、责任边界时，优先使用 [`domain-modeling`](https://github.com/mattpocock/skills/tree/main/skills/engineering/domain-modeling)。普通修改不必启动这些方法。技能缺失时使用内置精简指引，Hippo Spec 始终保留本轮范围、授权与收口规则。
+
+[OpenSpec](https://github.com/Fission-AI/OpenSpec) 项目使用其已有 schema 与同步、归档机制，不另建 spec/ticket 流程。领域词汇和 ADR 保存术语与决策理由，不替代行为规范。
 
 ## 完成意味着什么
 

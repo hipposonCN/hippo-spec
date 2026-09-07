@@ -37,7 +37,7 @@ These modes describe work, not locked phases. Do not repeat planning on routine 
 - Prefer one thin, observable slice through the necessary layers. Change an adjacent module only when required for that slice. Respect explicit file allowlists; otherwise a newly discovered relevant file is not itself a reason to restart planning.
 - Keep unrelated improvements outside this change. Do not append speculative features or tickets. Continue the slices needed for the requested outcome, then stop; finishing one slice does not finish an explicitly requested larger deliverable.
 
-Use short behavior-level feedback loops and proportional review. Read only the relevant section of [references/engineering-discipline.md](references/engineering-discipline.md) when it adds needed guidance. Matt Pocock methods are optional aids; they must not introduce a second spec or lifecycle.
+Use short behavior-level feedback loops and proportional review. For hard diagnosis or domain-model changes, select the matching installed Matt Pocock method through [references/engineering-discipline.md](references/engineering-discipline.md). Use its fallback when absent; preserve this assignment's scope, authorization, and single behavior authority.
 
 ## Hand off the same assignment
 

@@ -1,6 +1,11 @@
 # Engineering methods
 
-Use only the section needed for the current work. Installed Matt Pocock methods may help at the matching stage; these fallbacks are sufficient when absent. Do not install optional skills or run a second spec/ticket workflow as a prerequisite.
+Use only the section needed for the current work. Prefer the matching installed Matt Pocock skill; use the guidance below when absent. Do not install skills or run a second spec/ticket workflow as a prerequisite.
+
+- **`diagnosing-bugs`:** use for hard-to-localize bugs, intermittent failures, or performance regressions. Its feedback-loop and hypothesis-testing discipline supports diagnosis; a routine fix with a known cause needs only the focused repair loop below.
+- **`domain-modeling`:** use when defining or changing domain terms, entity relationships, or responsibility boundaries. Challenge ambiguities with concrete scenarios and record resolved vocabulary in the project's glossary. Merely reading familiar terminology does not trigger modeling. Keep glossary and ADR rationale separate from behavior requirements.
+
+Pass the current outcome, scope, and authorization into the method. It cannot widen the assignment, turn read-only diagnosis into repair, or start a competing spec/task lifecycle. Use existing authorization for settled decisions; surface only material unresolved conflicts.
 
 ## Explore and model
 
