@@ -1,16 +1,20 @@
-# Routing acceptance examples
+# Behavioral acceptance examples
 
-Use these examples to validate or disambiguate the root decision. They are examples of the routing contract, not another task ledger or behavior specification.
+Use these to validate decisions, not as another task ledger. Judge the resulting actions and artifacts; matching mode names or wording is insufficient.
 
-| # | Input | Expected result | Decisive rule |
-|---|---|---|---|
-| 1 | Correct wording in one documentation file with a Markdown check | `skip`; implicit routing stays silent and emits no context | Clear, local, reversible, one feedback loop, and no handoff. |
-| 2 | Implement the next vertical slice under an existing change with the same intent | `continue` | Inherit `active_change`, `scope_lock`, `current_slice`, and acceptance evidence; do not recreate artifacts. |
-| 3 | Repair a production defect in an already frozen contract | `repair` | Reproduce, reduce to the smallest loop, add a regression test, apply the minimum fix, and verify the original symptom. |
-| 4 | Execute a cross-repository release already covered by a frozen contract and active change | `continue`, not `full:new` | Repository and release risk add acceptance evidence but do not create new behavior intent. |
-| 5 | Add a previously unrecorded public permission or persistence contract that needs cross-session coordination | Root selects `full:new` once; implementation proceeds as `continue` | Both creation gates are satisfied; `full:new` creates the change and normalizes to `continue` without rerouting. |
-| 6 | Perform the final review of a pinned PR or fixed `HEAD` | `review-only` | Consume the existing spec and fixed code; do not write planning artifacts. |
-| 7 | A fixed-scope review returns only unsupported suggestions or subjective code smells | Non-blocking; keep `review-only` and do not repeat the review | Only reproducible failure, cited missing specified behavior, or cited repository-rule violation blocks. |
-| 8 | An executor receives an existing `Hippo Spec Context` | No route selection; execute the inherited `current_slice` | Context exists only for a handoff. Executors do not call Hippo Spec or enlarge `scope_lock`. |
-
-A simple conversational review or status query remains `skip`. `review-only` is reserved for consuming an existing specification and a deliberately fixed code point as a formal review boundary.
+| Request and evidence | Expected behavior |
+|---|---|
+| Correct one sentence in a README | Make the edit and check it; no proposal, handoff context, test scaffold, or extra confirmation. |
+| Change a documented API default in one session | Update the existing behavior authority and verify the new default; session length does not waive the spec delta. |
+| Add durable behavior to a project without OpenSpec | Use its current documentation/task convention, or one concise local record if needed; no framework installation or duplicate ledger. |
+| Diagnose and fix a defect; the cause is initially unclear | Investigate and continue the authorized fix once understood; do not require a new request to exit `light`. |
+| Explain a defect; user explicitly requests read-only diagnosis | Report evidence and cause without implementing a repair. |
+| A same-title old change is superseded; the current request concerns its replacement | Use the effective replacement; do not resume the old unchecked tasks. |
+| A design assumption fails, but another existing implementation path meets the same contract | Update the assumption and necessary tasks in place, verify the same acceptance, and continue. |
+| The implementation passes only after removing an accepted requirement | Restore the requirement and fix the defect, or surface the material conflict; do not redefine success. |
+| A required helper lies outside the initial file estimate; another file has unrelated cleanup opportunities | Include the necessary helper if within authorized systems; respect explicit allowlists and leave unrelated cleanup outside the assignment. |
+| A delegated slice receives an existing context, but its selected change has since been replaced | Check the replacement evidence and return the material conflict to the root; do not follow stale authority or invent a broader assignment. |
+| An already-authorized cross-repository release has passing code but no activation/readback | Continue the existing assignment to obtain the required operational evidence; no new spec solely for release and no premature completion. |
+| The requested patch is verified, while its umbrella change includes a future migration | Close the patch with its evidence; leave the unrelated migration open. If the user requested the whole change, continue its remaining authorized slices. |
+| Review finds a concrete defect plus optional architecture suggestions | Fix and recheck the defect within an implementation task; keep suggestions non-blocking. In review-only work, report findings without edits. |
+| Selected work is complete or superseded while other historical changes remain active | Synchronize and close the selected work with truthful status; do not bulk-close the backlog or mark abandoned work implemented. |

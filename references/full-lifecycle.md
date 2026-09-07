@@ -1,43 +1,26 @@
-# Persistent specification routes
+# Keep one current behavior record
 
-Use this reference only after the root selected `full:new` or `continue`. Do not route again here.
+Use this reference when selecting, updating, or closing a persistent record. Do not restart planning for a stage transition.
 
-## Prefer continuation
+## Select the effective authority
 
-Inspect existing OpenSpec changes and main specs before creating anything. Select `continue` whenever one change already owns the same intent, even if the current slice is cross-repository, security-sensitive, a migration, a release, or needs several validations.
+Inspect the relevant current spec, candidate change, and available supersession or completion evidence. A matching title, newer timestamp, or unchecked box alone does not establish authority. If sources conflict materially, expose the conflict rather than silently pick the convenient one.
 
-For `continue`:
+Continue a change only when it still owns the requested behavior and has authorized work remaining. An archived or superseded change can explain history but must not reactivate its old task tree. Honor the user's explicit new decision by updating the affected requirement; preserve unrelated contracts and permissions.
 
-- bind `active_change` to the exact existing change;
-- preserve its scope and normative behavior;
-- set `current_slice` to the next incomplete, independently verifiable slice;
-- carry forward the exact acceptance evidence already required, adding release/readback proof when the slice needs it;
-- read the change through the project's installed OpenSpec status/instruction surface;
-- do not regenerate proposal, design, specs, or the task tree.
+## Record only the behavior delta
 
-If implementation exposes a genuinely different intent or an unrecorded public behavior decision, stop and return it to the root or user. Do not recursively call Hippo Spec or silently widen the current change.
+In OpenSpec projects, use the installed schema and workflow. Elsewhere, use the existing documentation/spec/task convention. If none exists and durable behavior needs recording, use one concise local record in the project's normal documentation location. Do not install a framework or publish to an external tracker without authorization.
 
-## Create only when the gate is complete
+Capture the outcome, changed behavior, necessary acceptance scenarios, and exclusions. Reuse existing requirements by reference. Add design rationale only for a consequential choice; do not generate exhaustive user stories or speculative future tasks.
 
-Select `full:new` only when both conditions hold:
+Refine design assumptions and task order as evidence arrives. Replace obsolete planning text in place, retaining a short reason or supersession link where needed. An implementation difficulty is not permission to remove a requirement or narrow acceptance. A newly discovered need outside the assignment is a separate decision, not an automatic addition.
 
-1. the request introduces new, unrecorded persistent behavior, a public contract, permission, or ownership decision; and
-2. coordinating that decision and its implementation requires more than one session.
+## Close precisely
 
-Risk, repository count, deployment, release, migration, or validation count does not satisfy condition 1 by itself.
+- Mark only behavior backed by the required evidence complete. Keep source, merge, activation, and delivery states distinct when they matter to the request.
+- Synchronize accepted behavior into the current spec through the project's workflow. Reconcile overlapping deltas by explicit decisions and implementation evidence, not archive order alone.
+- Archive a completed change when its applicable evidence and synchronization are complete. A superseded change needs a replacement reference and disposition of remaining work; do not claim the old work was implemented.
+- Close only the selected change or slice. A larger parent can remain open; unrelated historical cleanup is a separate assignment.
 
-When `full:new` is selected, the root uses the project's installed OpenSpec workflow and schema to create the minimum coherent change exactly once. OpenSpec owns the behavior delta and tasks. GitHub issues may reference the change and assign work, but must not restate requirements or become a parallel task authority. If the project has no OpenSpec installation, request authorization before initializing it; do not substitute another specification system.
-
-Do not delegate `full:new`. Once the change exists, the remaining work uses `continue` without another lifecycle assessment. If work crosses an executor or session boundary, emit a `Hippo Spec Context` with `lane: continue` and that exact `active_change`. This is the defined result of the bootstrap, not a reroute.
-
-## Preserve the three truths
-
-- **Artifact truth** proves the authoritative specification is present, current, and structurally valid.
-- **Implementation truth** proves the scoped behavior exists and focused tests or checks pass.
-- **Operational truth** proves the intended package, release, process, external state, receipt, or fresh readback is active when the specification requires it.
-
-High-risk execution affects `acceptance_evidence`; it does not create a new lifecycle. Keep source, commit, PR, merge, release, activation, and readback as separate states when the project distinguishes them.
-
-## Finish the active change
-
-Mark a task complete only when its specified behavior and evidence exist. Run one final fixed-scope review when required, then verify only cited blockers after repairs. Sync or archive through the installed OpenSpec workflow only after all applicable truth layers pass. Follow-up work with a different intent returns to the root as a separate decision.
+If closeout requires unavailable authority or an unapproved external action, report exactly what is complete and what remains. Preserve the evidence so the next executor can continue without reconstructing the task.
