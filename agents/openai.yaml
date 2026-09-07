@@ -1,4 +1,4 @@
 interface:
   display_name: "Hippo Spec"
-  short_description: "以最小流程完成有界改动，让规范随证据更新，并通过适用验收统一收口"
+  short_description: "一个技能完成有界改动，内置按需诊断与领域建模，让规范随证据更新并统一收口"
   default_prompt: "使用 $hippo-spec 按现有规范完成本轮目标；随证据调整方案，保持范围，并以适用的验证和记录收口。"

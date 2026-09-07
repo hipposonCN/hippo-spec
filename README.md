@@ -2,10 +2,12 @@
 
 Hippo Spec 统一接住软件需求，选择最小工作方式，并依据证据完成收口。目标和权限有边界，设计可以随证据更新；流程不会因跨仓库、会话切换或发布而反复重启。
 
+只安装 Hippo Spec 即可使用这套流程。诊断、领域建模、动态规范维护和验收收口都在包内按需读取，无须另装 OpenSpec 或 Matt Pocock skills，也无须初始化项目框架。
+
 ## 使用原则
 
 - 先明确本轮交付结果：诊断、修复、合并或上线，按实际授权推进。
-- 只维护一份行为与任务权威。已有 OpenSpec 的项目继续使用 OpenSpec；其他项目沿用现有文档或任务约定，无须安装框架。
+- 只维护一份行为与任务权威。已有 OpenSpec 的项目沿用其 Markdown 记录；其他项目沿用现有文档或任务约定，没有约定时只按需补一份简短记录。
 - 行为变化决定是否更新规范，会话数量只决定是否需要交接。
 - 只续接仍有效、未被替代且符合本轮范围的 change。历史任务不会自动成为本轮待办。
 - 新证据可以修正设计假设和任务顺序，但不能自行增加功能、扩大权限或放宽验收。
@@ -25,9 +27,15 @@ Hippo Spec 统一接住软件需求，选择最小工作方式，并依据证据
 
 模式描述当前工作，不是必须逐一通过的关卡。普通修改不需要输出路由表或建立任务文件。跨执行者或会话时，才传递已有的 `Hippo Spec Context`：有效记录、范围、当前切片和验收证据。
 
-难定位的缺陷、间歇性故障或性能回退，优先使用已安装的 Matt Pocock [`diagnosing-bugs`](https://github.com/mattpocock/skills/tree/main/skills/engineering/diagnosing-bugs)；定义或修改领域术语、实体关系、责任边界时，优先使用 [`domain-modeling`](https://github.com/mattpocock/skills/tree/main/skills/engineering/domain-modeling)。普通修改不必启动这些方法。技能缺失时使用内置精简指引，Hippo Spec 始终保留本轮范围、授权与收口规则。
+难定位的缺陷、间歇性故障或性能回退，读取内置[诊断方法](references/diagnosing-bugs.md)：建立真实症状的反馈循环、最小化复现、验证假设、修复并回归。定义或修改领域术语、实体关系、责任边界时，读取内置[领域建模](references/domain-modeling.md)：澄清术语、检验边界场景、维护词汇表，只为重要决策留下简短 ADR。普通修改不必加载这些内容。
 
-[OpenSpec](https://github.com/Fission-AI/OpenSpec) 项目使用其已有 schema 与同步、归档机制，不另建 spec/ticket 流程。领域词汇和 ADR 保存术语与决策理由，不替代行为规范。
+这些方法吸收了 Matt Pocock 的设计，已经适配到 Hippo Spec 的范围、授权和收口规则；[来源与 MIT 许可](THIRD_PARTY_NOTICES.md)随包保留。领域词汇和 ADR 保存术语与决策理由，不替代行为规范。
+
+## 已有项目怎么接续
+
+既有 OpenSpec 文档可以直接读取、修改、同步和归档，具体操作在[规范维护指引](references/full-lifecycle.md)中。保留有效行为和历史来源，无须迁移整个目录，也不另建 spec/ticket 流程。
+
+如果某个旧项目的构建或 CI 明确调用 `openspec validate`，那仍是该项目的检查依赖。安装 Hippo Spec 不会自动改写这项检查；需要单独迁移并保留必要校验，不能跳过后宣称通过。新项目无须添加这项依赖。
 
 ## 完成意味着什么
 
@@ -53,4 +61,4 @@ npx skills@latest add hipposonCN/hippo-spec
 
 ## License
 
-MIT
+MIT；第三方方法许可见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
