@@ -5,6 +5,10 @@ Use these to validate decisions, not as another task ledger. Judge the resulting
 | Request and evidence | Expected behavior |
 |---|---|
 | Correct one sentence in a README | Make the edit and check it; no proposal, handoff context, test scaffold, or extra confirmation. |
+| A new project verification guide describes startup, driving a feature and cleanup, but has never been run | Execute one mapped feature through the guide and preserve raw evidence after cleanup; if required tools/access are missing, keep the guide draft/blocked rather than claiming delivery. |
+| UI tests pass at the controller level but the requested browser path was not driven | Obtain the required browser evidence or report that layer blocked; do not relabel an API/controller check as UI acceptance. |
+| Required real-Writer test skips while mock tests and package lint pass | Keep the real-Writer claim blocked, retain all raw statuses, and resolve the actual engine/input gap without fabricated receipts or weakened checks. |
+| Research schema, rendering and persistence pass but a frozen case has unsupported or future-dated evidence | Keep engineering and domain-quality results separate; address the specified domain failure without launching unauthorized live research. |
 | Change a documented API default in one session | Update the existing behavior authority and verify the new default; session length does not waive the spec delta. |
 | Add durable behavior to a project without OpenSpec | Use its current documentation/task convention, or one concise local record if needed; no framework installation or duplicate ledger. |
 | Only Hippo Spec is installed; a hard defect or domain-language change needs specialized guidance | Read the matching bundled reference and complete the authorized work using available repository tools; no external skill lookup, install, or source fetch. |

@@ -45,6 +45,8 @@ These modes describe work, not locked phases. Do not repeat planning on routine 
 
 Use short behavior-level feedback loops and proportional review through [references/engineering-discipline.md](references/engineering-discipline.md). For hard diagnosis or domain-model changes, it routes to bundled methods. Read only the needed reference and use it directly, without an external skill lookup or installation. These methods inherit this assignment's scope, authorization, and single behavior authority.
 
+For behavior changes, select the applicable checks using that reference's [verification requirements](references/engineering-discipline.md#agent-operated-verification). The owner executes the available user-path verification and captures raw evidence without making the user relay routine screenshots or logs. Reuse existing verification entry points; a newly written or materially changed verification procedure is only a draft until its own instructions have been run end to end on at least one in-scope feature, including cleanup and surviving evidence. Missing access or tools blocks the affected claim; builds, mocks, and another agent's opinion do not replace the required observation.
+
 ## Hand off the same assignment
 
 Only when crossing an executor or session boundary, pass:
