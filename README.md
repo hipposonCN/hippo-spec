@@ -131,5 +131,3 @@ Codex 可在现有全局 `~/.codex/AGENTS.md`（自定义 Codex home 则用其�
 Hippo Spec 吸收 Matt Pocock 的诊断/建模方法，以及 pstack 的功能地图、可执行验证和评测思路，按有界任务、现有工程设施和明确授权做适配。没有引入它们的运行框架或模型路由。方法来源与许可见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
 
 MIT；工程执行规则以 [SKILL.md](SKILL.md) 为准，README 是使用说明。
-
-[Disposable CI feedback probe](references/owned-ci-probe-missing.md)
