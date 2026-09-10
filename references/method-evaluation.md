@@ -21,6 +21,8 @@ python3 scripts/prepare_method_case.py small-edit --output /tmp/hippo-handbook
 
 Give a fresh agent only the fixed method package, workspace and request, plus resource restrictions. No network, other projects, global configuration, production data or external writes are needed. Save the host's actual tool transcript when available, raw command output, final diff and report outside `workspace/`. If a transcript is unavailable, state that limit; do not replace it with the candidate's account of which rules it followed.
 
+Capture command output and the command's own exit status at execution time, including failed attempts. A summary may quote excerpts but must link to preserved raw output rather than reconstructing a cleaner log. If a capture wrapper returns zero while its child fails, retain the child status; a suppressed shell error is not validation. For a fixture without Git, compare its files with `assessment.json` baselines instead of counting a failed `git diff` as proof. Missing raw evidence goes back to the original owner for recovery from the actual tool record, with that intervention recorded; never invent a pre-fix log after the fix.
+
 The coordinator inspects `assessment.json` and the artifacts. Score each applicable criterion as pass/fail/blocked with direct evidence; do not grade exact wording or a mode label. Missing evidence is not a pass. An agent can correctly report a product/check blocker: distinguish correct handling of that blocker from successful feature acceptance.
 
 After inspecting the result, remove only this run's `workspace/`; retain the request, assessment and evidence. Check that no owned process remains and the evidence still exists. Do not delete the whole output root with its proof.
