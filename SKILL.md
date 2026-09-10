@@ -17,6 +17,10 @@ Use one behavior and task authority in the project's existing spec, documentatio
 
 Reuse a change only when it is still effective, not superseded, and its remaining work matches this request. Inspect the relevant authority and revision; do not audit the entire historical backlog on every task. Read [references/full-lifecycle.md](references/full-lifecycle.md) when selecting, updating, or closing a persistent record.
 
+Read only the feature-map entries relevant to the user outcome. Separate implemented behavior with valid evidence, evidence invalidated by relevant changes, and actual missing behavior. Use that comparison to select the next independently verifiable slice; a map is not permission to expand the backlog. If the project has no map, use its existing tests and documentation and record only the mapping needed for this task.
+
+Establish the authorized delivery target in the existing task before implementation: local change, reviewable PR with required validation, merge, or activated release with runtime proof. Infer it from the user's request and existing authorization; ask only for a material ambiguity. A target does not authorize its side effects. Keep scope, owner, baseline, relevant feature-map entries, and acceptance conditions together; do not create a parallel task format.
+
 ## Choose the smallest working mode
 
 | Mode | Use it for | Action |
@@ -52,9 +56,25 @@ hippo_spec_context:
   scope_lock: <authorized systems, explicit exclusions and any file allowlist>
   current_slice: <immediate objective and its place in the requested outcome>
   acceptance_evidence: <required checks/readbacks and evidence already obtained>
+  standard_and_map: <actual paths and revisions/content hashes; relevant entries only>
+  ownership: <owner and return destination; checkout/base SHA; owned files and isolated test resources>
+  delivery_target: <authorized terminal outcome; existing branch/PR or not applicable>
+  return_evidence: <candidate SHA, changed paths, raw results, evidence locations, blockers and next owner>
 ```
 
 `full:new` records the delta at the root, then becomes `continue`. Recipients inherit the assignment rather than replan it. Recheck the selected authority's validity on resumption; return material conflicts to the root. A mode transition never grants more scope or permission.
+
+Supply this context explicitly when delegating, including to further descendants; do not assume the host copies conversation or global instructions. Resolve the referenced inputs before dependent writes; report missing inputs rather than inventing them. A child may narrow permissions, never widen them. Use one Writer per worktree/branch, assign shared interfaces and integration files to one owner, and isolate writable fixtures/ports. Independent reviewers remain read-only unless write ownership is explicitly transferred. Delegate only when an independently completable slice materially benefits from it; otherwise execute locally.
+
+## Own delivery through feedback
+
+For an authorized PR delivery, push the first coherent reviewable commit and create or update its Draft PR after checking that the workflow does not cause unauthorized deployment. Do not wait for all project work or final independent review to open the Draft. Reuse the same task and PR through implementation, affected tests, CI repair, and delivery. Update only affected feature-map entries with implementation, test, PR, and evidence references in that delivery.
+
+The original owner handles ordinary CI failures autonomously within scope. After two substantive fixes under the same failing hypothesis, reassess the hypothesis, inputs, and environment and return the counterevidence to the coordinator if unresolved. Preserve raw failures; do not weaken assertions or skip required checks to get green. Reuse valid unchanged evidence and recheck affected boundaries after a fix. Integrated or release acceptance must cover the actual combined candidate and required package/runtime layers.
+
+Use available task-completion and CI feedback mechanisms. On delivery, failure, or a decision, send the coordinator the PR, exact head, run/result, evidence, blocker, and next owner. Do not assume a CI event can wake an agent: when unsupported, disclose that limit and use an existing bounded status check or explicit handoff. Do not create a scheduler or recurring automation without authorization; unchanged state calls for no repeated audit or reminder.
+
+Before merge, verify the reviewed candidate against the intended merge content and required checks. Distinguish configured workflows, actual successful runs, and server-enforced checks. Merge, deployment, and external delivery retain their own authorization boundaries; CI success alone grants none of them.
 
 ## Close the requested outcome
 
