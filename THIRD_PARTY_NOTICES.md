@@ -11,6 +11,10 @@ Hippo Spec narrows their triggers, preserves the root assignment's authorization
 
 [OpenSpec](https://github.com/Fission-AI/OpenSpec) is the source of the compatible project document convention. No OpenSpec runtime, generated skill, or CLI implementation is bundled or required. External links in this package identify sources; they are not setup steps.
 
+## pstack design references
+
+The project-verification and method-evaluation guidance was independently written with reference to [Cursor pstack](https://github.com/cursor/plugins/tree/c5db7fef1f1b1ebb2d4b7ae0308bf4beb10cb4c1/pstack), revision `c5db7fef1f1b1ebb2d4b7ae0308bf4beb10cb4c1`, especially its `create-verification-skill`, `maintain-verification-skill`, and `poteto-mode/playbooks/eval.md` workflows. No pstack scripts, agent definitions, runtime dependencies or model configuration are bundled. Hippo Spec retains project-owned maps, scoped maintenance and explicit authorization rather than importing the upstream autonomous-operation defaults.
+
 ## Matt Pocock Skills license
 
 MIT License

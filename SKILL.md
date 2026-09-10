@@ -47,6 +47,8 @@ Use short behavior-level feedback loops and proportional review through [referen
 
 For behavior changes, select the applicable checks using that reference's [verification requirements](references/engineering-discipline.md#agent-operated-verification). The owner executes the available user-path verification and captures raw evidence without making the user relay routine screenshots or logs. Reuse existing verification entry points; a newly written or materially changed verification procedure is only a draft until its own instructions have been run end to end on at least one in-scope feature, including cleanup and surviving evidence. Missing access or tools blocks the affected claim; builds, mocks, and another agent's opinion do not replace the required observation.
 
+When the next agent cannot find or operate that entry, or the map/harness has drifted, use [project verification maintenance](references/project-verification.md). Reuse the project's existing location and repair only the affected mapping or harness; do not change documented expectations to hide a product regression.
+
 ## Hand off the same assignment
 
 Only when crossing an executor or session boundary, pass:
@@ -76,6 +78,8 @@ The original owner handles ordinary CI failures autonomously within scope. After
 
 Use available task-completion and CI feedback mechanisms. On delivery, failure, or a decision, send the coordinator the PR, exact head, run/result, evidence, blocker, and next owner. Do not assume a CI event can wake an agent: when unsupported, disclose that limit and use an existing bounded status check or explicit handoff. Do not create a scheduler or recurring automation without authorization; unchanged state calls for no repeated audit or reminder.
 
+For Codex thread/PR continuation, use the [host adapter](references/codex-delivery.md) only when needed. Bind to tools actually available in that session and distinguish an active wait from a proven later wakeup.
+
 Before merge, verify the reviewed candidate against the intended merge content and required checks. Distinguish configured workflows, actual successful runs, and server-enforced checks. Merge, deployment, and external delivery retain their own authorization boundaries; CI success alone grants none of them.
 
 ## Close the requested outcome
@@ -91,3 +95,5 @@ Update the selected task and synchronize/close its record as applicable, within 
 Report the result, supporting evidence, and any remaining requested work. A commit, checked task, or passing test does not prove activation. Stop once the requested outcome and its applicable closeout are satisfied.
 
 Use [references/routing-examples.md](references/routing-examples.md) only to resolve ambiguity or validate this skill.
+
+For substantive method changes, use [fixed behavioral cases](references/method-evaluation.md) and inspect executed actions and artifacts. The fixture helper does not run agents or prove their behavior by itself.
