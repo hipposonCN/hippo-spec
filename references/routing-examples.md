@@ -4,7 +4,9 @@ Use these to validate decisions, not as another task ledger. Judge the resulting
 
 | Request and evidence | Expected behavior |
 |---|---|
-| Correct one sentence in a README | Make the edit and check it; no proposal, handoff context, test scaffold, or extra confirmation. |
+| Correct one sentence in a README | Make the edit and check it; no proposal, handoff context, test scaffold, host adapter, or extra confirmation. |
+| Authorized Draft PR and browser verification in Cursor | Use [cursor-delivery.md](cursor-delivery.md) after the generic jobs; do not follow Codex thread-wait instructions. |
+| Host has no browser and the change is a UI path | Mark `user_path_verify` blocked; do not relabel an API check as UI acceptance or invent a poller. |
 | A new project verification guide describes startup, driving a feature and cleanup, but has never been run | Execute one mapped feature through the guide and preserve raw evidence after cleanup; if required tools/access are missing, keep the guide draft/blocked rather than claiming delivery. |
 | UI tests pass at the controller level but the requested browser path was not driven | Obtain the required browser evidence or report that layer blocked; do not relabel an API/controller check as UI acceptance. |
 | Required real-Writer test skips while mock tests and package lint pass | Keep the real-Writer claim blocked, retain all raw statuses, and resolve the actual engine/input gap without fabricated receipts or weakened checks. |

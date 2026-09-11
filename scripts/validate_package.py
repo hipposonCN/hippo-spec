@@ -12,6 +12,8 @@ def validate(root: Path) -> list[str]:
     for relative in (
         "SKILL.md", "README.md", "LICENSE", "THIRD_PARTY_NOTICES.md",
         "agents/openai.yaml", "references/routing-examples.md",
+        "references/host-pointer.md", "references/generic-delivery.md",
+        "references/cursor-delivery.md", "references/codex-delivery.md",
     ):
         if not (root / relative).is_file():
             errors.append(f"Missing package file: {relative}")
@@ -25,6 +27,12 @@ def validate(root: Path) -> list[str]:
             for field in ("name", "description"):
                 if not re.search(rf"^{field}:\s*\S.+$", header[1], re.M):
                     errors.append(f"SKILL.md: missing {field}")
+        body = text[header.end():] if header else text
+        body_lines = [line for line in body.splitlines() if line.strip()]
+        if len(body_lines) > 80:
+            errors.append(f"SKILL.md: kernel body has {len(body_lines)} non-empty lines; keep at most 80")
+        if "references/codex-delivery.md" in body and "references/generic-delivery.md" not in body:
+            errors.append("SKILL.md: kernel must not bind Codex delivery without the generic host jobs")
     for path in sorted(root.rglob("*.md")):
         if ".git" in path.relative_to(root).parts:
             continue

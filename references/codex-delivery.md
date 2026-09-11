@@ -1,6 +1,16 @@
 # Continue delivery in Codex
 
-Use for delegated PR delivery or resuming CI feedback. This is an adapter to available host tools, not a scheduler or an extra task store. Other agents can implement the same handoff using their own tools.
+Use only in a Codex session, after [generic-delivery.md](generic-delivery.md). This file binds the shared delivery jobs to Codex tools. It is not the kernel, and it is not the Cursor adapter.
+
+| Job | Codex binding |
+|---|---|
+| `reviewable_pr` | GitHub connector or `gh`. Open or update the Draft on the current candidate. |
+| `read_checks` | `gh pr checks` / `gh run view` on the exact head. |
+| `user_path_verify` | The project's existing harness. Codex has no Cursor browser. |
+| `persist_entry` | The short [host pointer](host-pointer.md) in `~/.codex/AGENTS.md`. |
+| `handoff_or_wait` | Visible thread controls only when they exist and have been observed to wake the same owner. |
+
+Use for delegated PR delivery or resuming CI feedback. This is an adapter to available host tools, not a scheduler or an extra task store.
 
 ## Identify the actual owner and capabilities
 
