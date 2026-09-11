@@ -1,6 +1,6 @@
 # Kernel and host adapters
 
-Status: active  
+Status: active
 Mode after record: `continue`
 
 ## Outcome
