@@ -14,7 +14,7 @@ Hippo Spec 是可跨 Agent 使用的方法包。它把任务范围、现有 Spec
 
 ## Hippo Spec 如何路由任务
 
-先从请求、项目规则和当前有效的 Spec / Task 判断目标、授权范围及验收终点，再选最轻的工作模式。旧计划只有仍然有效且剩余工作属于本次授权时才可续用；简单修改无需为路由另建任务记录。具体规则以 [SKILL.md](SKILL.md#choose-the-smallest-working-mode) 为准：
+先从请求、项目规则和当前有效的 Spec / Task 判断目标、授权范围及验收终点，再选最轻的工作模式。旧计划只有仍然有效且剩余工作属于本次授权时才可续用；简单修改无需为路由另建任务记录。具体规则以 [SKILL.md](SKILL.md#route) 为准。内核只负责路由；功能地图、验证、多 Agent 和 CI 理念仍在本 README 与对应 reference 中：
 
 | 情况 | 模式 | 接下来的动作 |
 | --- | --- | --- |
@@ -34,9 +34,10 @@ Hippo Spec 是可跨 Agent 使用的方法包。它把任务范围、现有 Spec
 | 需要 | 入口 | 交付结果 |
 | --- | --- | --- |
 | 开发、修复、续做、审查 | [SKILL.md](SKILL.md) | 最小可验收改动，以及当次已授权交付 |
+| 只保留宿主常驻入口 | [宿主 pointer](references/host-pointer.md) | 12–20 行；`skip` 不再加载方法包 |
 | Agent 不知道从哪里进入、如何验收功能 | [项目验证入口与维护](references/project-verification.md) | 复用现有地图/脚本，补齐真实命令、操作和证据路径；至少一个受影响路径实跑 |
-| 把任务交给另一个 Agent | [交接字段](SKILL.md#hand-off-the-same-assignment) | 标准与地图版本、任务范围、基线、所有权、验收、终态及回传位置 |
-| 在 Codex 中接续线程、处理 PR/CI 失败 | [Codex 交付操作说明](references/codex-delivery.md) | 按实际工具回到原负责人，核对当前 head、失败日志、修复与检查 |
+| 把任务交给另一个 Agent | [交接字段](SKILL.md#hand-off) | 标准与地图版本、任务范围、基线、所有权、验收、终态及回传位置 |
+| 在当前宿主交付 PR / 读 CI / 跑用户路径 | [通用交付工作](references/generic-delivery.md)，再读 [Cursor](references/cursor-delivery.md) 或 [Codex](references/codex-delivery.md) | 按实际工具绑定同一组工作；缺能力就标明，不假装能叫醒自己 |
 | 决定需要哪些测试 | [工程验证要求](references/engineering-discipline.md#agent-operated-verification) | 根据 UI、CLI/API、持久写入、性能或集成风险取得适用证据 |
 | 判断修改 Skill 后是否更可靠 | [方法行为评测](references/method-evaluation.md) | 固定任务与隔离输入，检查真实动作和产物；不凭 Agent 自述打分 |
 | 难定位的 Bug / 领域边界问题 | [诊断](references/diagnosing-bugs.md) / [领域建模](references/domain-modeling.md) | 最小复现、检验假设，或明确术语与责任边界 |
@@ -132,18 +133,22 @@ npx skills@latest add hipposonCN/hippo-spec
 
 安装与转移时保留完整包，包括 `references/`、`scripts/`、`tests/`、`agents/` 和许可。需要固定版本时使用对应 Git tag/commit，检查安装后的文件是否完整；不假定各安装工具都有相同的版本参数。
 
+## 怎么分层加载
+
+| 层 | 何时读 | 内容 |
+| --- | --- | --- |
+| 宿主 pointer | 唯一可常驻 | [host-pointer.md](references/host-pointer.md) |
+| 内核 | 实质开发、修复、续做、审查、委派 | [SKILL.md](SKILL.md) |
+| 方法 reference | 内核点名的那一篇 | 功能地图维护、验证、诊断、建模、评测 |
+| 宿主适配器 | 需要 PR / CI / 浏览器 / 等待时 | [generic-delivery.md](references/generic-delivery.md) + 当前宿主一篇 |
+
+`skip` 停在 pointer。不要把 `SKILL.md` 或 reference 树贴进 `AGENTS.md` / Cursor user rule / `CLAUDE.md`。
+
 ## 全局入口与更新
 
-Codex 可在现有全局 `~/.codex/AGENTS.md`（自定义 Codex home 则用其路径）保留短入口，项目规则仍由项目提供：
+在宿主现有的短入口文件里只放 [宿主 pointer](references/host-pointer.md) 的那段文字。Codex 用 `~/.codex/AGENTS.md`；Cursor 用 user rule，方法包装在 `~/.cursor/skills/hippo-spec`。项目规则仍由项目提供。
 
-```text
-实质开发、修复、续做、审查或委派时，读取已安装 Hippo Spec，
-以及项目适用的 AGENTS、有效任务/Spec 和相关功能地图。
-明确范围、负责人、基线、验收和已授权交付终态；原负责人完成对应闭环。
-简单修改保持轻量；这些规则不授予推送、合并或生产权限。
-```
-
-不同宿主的发现目录、线程 API 和权限不同，按实际能力适配。已运行任务不因方法发布而静默更换约定版本。本地副本的改进通过本仓 PR/Release 回收，更新后核对固定版本；只改一台机器不能声称所有 Agent 已同步。
+不同宿主的发现目录、线程 API 和权限不同，按实际能力适配。已运行任务不因方法发布而静默更换约定版本。本地副本的改进通过本仓 PR/Release 回收，更新后核对固定版本；只改一台机器不能声称所有 Agent 已同步。没有 Cursor 与 Codex 的内核 transcript 时，不宣称跨宿主已经好用。
 
 ## 来源与许可
 
