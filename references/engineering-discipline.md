@@ -15,7 +15,7 @@ Reuse the project's domain language. Keep glossary and decision rationale separa
 
 ## Implement and repair
 
-Work through one observable slice at a time. Prefer existing public interfaces and test seams. For behavior changes and regressions, demonstrate the missing or broken behavior before the fix, then add the minimum implementation and verify it. Test externally visible outcomes, not private structure or assertions that mirror the implementation.
+Each implementer works through one observable slice at a time; this does not require project-wide serial execution. Independent authorized slices may proceed concurrently under the ownership and dependency boundaries in the same Task. Prefer existing public interfaces and test seams. For behavior changes and regressions, demonstrate the missing or broken behavior before the fix, then add the minimum implementation and verify it. Test externally visible outcomes, not private structure or assertions that mirror the implementation.
 
 Keep refactoring limited to a concrete constraint on the slice. Run focused checks during iteration and required integration/static checks at the appropriate boundary. Documentation and mechanical edits need their relevant checks, not artificial red tests. Do not rerun unchanged broad checks without a new failure, change, or unresolved concern.
 
