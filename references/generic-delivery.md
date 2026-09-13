@@ -27,3 +27,15 @@ Reuse the current task, branch, PR, and owner. Push the first coherent reviewabl
 Before merge, distinguish configured workflows, actual successful runs, and server-enforced checks. Merge and activation keep their own authorization. CI success grants neither.
 
 Record which continuation mode worked: active-turn wait, configured scheduled follow-up, verified event wakeup, or manual re-entry.
+
+## Select an execution resource
+
+Use the least expensive existing host or runner that satisfies the task's platform and check requirements. A platform change needs either a concrete platform requirement or a bounded same-candidate comparison. Hold the exact candidate SHA, workflow and required-check set, fixtures, dependency versions, permissions, timeouts, and inputs constant; vary only the platform or resource, run each required check once on each compared resource within the authorized bound, and record startup/readiness, coverage, duration or cost signals, and failures. Keep a check-by-check coverage map and preserve every required check and assertion. A cheaper or faster resource does not justify dropping a check, weakening a test, or claiming savings from configuration alone. If the comparison cannot run, report the platform choice as unverified and retain the existing resource.
+
+## Query existing CI before requesting a run
+
+Treat a remote run as a state-changing, resource-consuming action and a query as a read-only observation. Query the exact candidate head, checks, run, jobs, and logs first. Request a run, rerun, or dispatch only when the existing task authorizes it, the exact head and required checks are known, and a missing or stale result or a recorded environment change makes the attempt necessary. Record whether each operation was a query or a run, its exact head/run identity, and its reason. Never trigger a run to poll status, substitute a different candidate, or repeat unchanged inputs. The final inventory must fail closed for a failed, cancelled, missing, or unexpectedly skipped required dependency; a zero-step or no-start job is not a successful check.
+
+## Diagnose startup and infrastructure failures
+
+If a remote job never starts, has no executable steps, or stops in queue/setup because of runner, service, billing, permission, or workflow infrastructure, classify it as an infrastructure/no-start result. Preserve the raw status, event, head, job and step state, annotations or logs, URL, and timestamps. It is neither a product-code failure nor a passing check; a required layer remains blocked until an actual run supplies its evidence. Inspect the workflow, exact ref/head, resource and account state before changing code. Do not edit product code, tests, assertions, or platform selection merely to turn an infrastructure result green, and do not blind-retry an unchanged no-start. Retry only after a concrete environment or workflow change is recorded and the bounded retry is authorized; otherwise return the blocker to the relevant owner. A job that starts and fails in its executable product steps follows the ordinary same-owner repair path.

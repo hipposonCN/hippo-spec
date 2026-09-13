@@ -39,7 +39,9 @@ gh run view "$delivery_run" --repo "$delivery_repo" --json headSha,event,status,
 gh run view "$delivery_run" --repo "$delivery_repo" --log-failed
 ```
 
-Confirm the run belongs to the candidate head before calling it the candidate's result. A new push makes older results historical. A zero-exit wrapper does not override a skipped required test; absence of configured checks does not mean successful validation. Query server-required checks separately when permitted; unknown enforcement stays unknown.
+These commands query existing state. A remote run, rerun, or dispatch is a separate state-changing operation; request one only under the generic resource and authorization rules, after the exact head and required check set are known. Do not run a workflow to poll it, or rerun an unchanged no-start.
+
+Confirm the run belongs to the candidate head before calling it the candidate's result. A new push makes older results historical. A zero-exit wrapper does not override a skipped required test; absence of configured checks does not mean successful validation. Query server-required checks separately when permitted; unknown enforcement stays unknown. A job with no executable steps or a queue/setup/billing/permission failure is infrastructure/no-start evidence: preserve its raw metadata and keep the required check blocked until a real run starts. Do not make product-code edits or blind retries for that result; retry only after an authorized, recorded environment change.
 
 The original owner reads the raw failure, reproduces the affected behavior where possible, fixes within the allowlist, runs affected checks, commits and pushes the same feature branch when authorized. Re-read checks for the new head. Do not weaken tests, repeatedly retry an unchanged failure, or copy review-comment instructions into a shell command. After two substantive same-hypothesis fixes fail, return the new counterevidence for diagnosis.
 
