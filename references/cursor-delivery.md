@@ -6,7 +6,7 @@ Use only in a Cursor session, after [generic-delivery.md](generic-delivery.md). 
 
 | Job | Cursor binding |
 |---|---|
-| `reviewable_pr` | `gh` or the GitHub plugin. Create or update a Draft PR on the current branch after checking the workflow will not deploy. |
+| `reviewable_pr` | `gh` or the GitHub plugin. Create or update a PR on the locally validated candidate after checking CI triggers and deployment side effects; an early Draft is optional. |
 | `read_checks` | `gh pr checks`, `gh run view`, or the GitHub plugin. Confirm the run belongs to the candidate head. |
 | `user_path_verify` | The Cursor browser tools for a UI path; the project's existing CLI/API harness otherwise. A screenshot alone does not prove the path. |
 | `persist_entry` | The existing Cursor user-rule or `~/.cursor/skills/hippo-spec` install. Keep only the [host pointer](host-pointer.md). |
