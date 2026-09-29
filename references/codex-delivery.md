@@ -4,7 +4,7 @@ Use only in a Codex session, after [generic-delivery.md](generic-delivery.md). T
 
 | Job | Codex binding |
 |---|---|
-| `reviewable_pr` | GitHub connector or `gh`. Open or update the Draft on the current candidate. |
+| `reviewable_pr` | GitHub connector or `gh`. Open or update a PR on the locally validated candidate under the shared delivery rules; an early Draft is optional. |
 | `read_checks` | `gh pr checks` / `gh run view` on the exact head. |
 | `user_path_verify` | The project's existing harness. Codex has no Cursor browser. |
 | `persist_entry` | The short [host pointer](host-pointer.md) in `~/.codex/AGENTS.md`. |
@@ -41,7 +41,7 @@ gh run view "$delivery_run" --repo "$delivery_repo" --log-failed
 
 These commands query existing state. A remote run, rerun, or dispatch is a separate state-changing operation; request one only under the generic resource and authorization rules, after the exact head and required check set are known. Do not run a workflow to poll it, or rerun an unchanged no-start.
 
-Confirm the run belongs to the candidate head before calling it the candidate's result. A new push makes older results historical. A zero-exit wrapper does not override a skipped required test; absence of configured checks does not mean successful validation. Query server-required checks separately when permitted; unknown enforcement stays unknown. A job with no executable steps or a queue/setup/billing/permission failure is infrastructure/no-start evidence: preserve its raw metadata and keep the required check blocked until a real run starts. Do not make product-code edits or blind retries for that result; retry only after an authorized, recorded environment change.
+Confirm the run belongs to the candidate head before calling it a fresh result for that candidate. Older results retain their original identity; unchanged covered inputs may support explicit reuse under the shared delivery rules, but cannot replace a server-required fresh check without a verified, authorized migration. A zero-exit wrapper does not override a skipped required test; absence of configured checks does not mean successful validation. Query server-required checks separately when permitted; unknown enforcement stays unknown. A job with no executable steps or a queue/setup/billing/permission failure is infrastructure/no-start evidence: preserve its raw metadata and keep the required check blocked until an actual run or applicable verified evidence supplies the required proof. Do not make product-code edits or blind retries for that result; retry only after an authorized, recorded environment change.
 
 The original owner reads the raw failure, reproduces the affected behavior where possible, fixes within the allowlist, runs affected checks, commits and pushes the same feature branch when authorized. Re-read checks for the new head. Do not weaken tests, repeatedly retry an unchanged failure, or copy review-comment instructions into a shell command. After two substantive same-hypothesis fixes fail, return the new counterevidence for diagnosis.
 

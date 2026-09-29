@@ -12,7 +12,7 @@ This adapter does not create a scheduler, a second task store, or product rules.
 
 | Job | Required outcome | If the host has it | If it does not |
 |---|---|---|---|
-| `reviewable_pr` | Open or update a Draft PR on the current candidate after checking the workflow will not deploy | Use the live PR tool (`gh`, `glab`, or the host PR API) | Leave a local branch note and stop |
+| `reviewable_pr` | Open or update a PR on a locally validated candidate after checking CI triggers and deployment side effects | Use the live PR tool (`gh`, `glab`, or the host PR API) | Leave a local branch note and stop |
 | `read_checks` | Read the exact head and required checks | Use the live CI/PR API | Report checks unknown |
 | `user_path_verify` | Drive the affected user path | Use the host browser or the project's existing harness | Mark that layer blocked |
 | `persist_entry` | Keep the short [host pointer](host-pointer.md) | User rule, `AGENTS.md`, or `CLAUDE.md` | Leave a session-only reminder |
@@ -22,11 +22,19 @@ Bind to the current tool schema. Do not call a nonexistent API. Do not advertise
 
 ## Shared delivery rules
 
-Reuse the current task, branch, PR, and owner. Push the first coherent reviewable commit and open or update its Draft when PR delivery is authorized. The original owner handles ordinary CI failures. After two substantive fixes under the same hypothesis, return counterevidence. Do not weaken assertions.
+Reuse the current task, branch, PR, and owner. When PR delivery is authorized, validate a coherent candidate locally, inspect remote triggers, then batch its push and PR update. An early Draft is optional for collaboration; it does not require pushing every implementation slice and does not itself suppress CI. The original owner handles ordinary CI failures locally before pushing the next validated candidate. After two substantive fixes under the same hypothesis, return counterevidence. Do not weaken assertions.
 
 Before merge, distinguish configured workflows, actual successful runs, and server-enforced checks. Merge and activation keep their own authorization. CI success grants neither.
 
 Record which continuation mode worked: active-turn wait, configured scheduled follow-up, verified event wakeup, or manual re-entry.
+
+## Validation frequency and evidence reuse
+
+Keep development feedback local. Design cheap Draft checks and explicit stable-candidate heavy checks, including relevant later changes; until supported by the actual workflow, reduce pushes rather than assuming Draft status saves resources. Assign PR, main and release checks distinct responsibilities; repeat checks for changed integration or artifact inputs, not just because the lifecycle stage changed.
+
+For each check, compare the candidate with its last applicable successful evidence: covered source and transitive dependencies, contracts, fixtures, lockfiles, check/workflow logic, and relevant environment. Preserve the original run identity. A cumulative PR path list locates possible impact but does not prove every check needs rerunning; a latest-commit diff or unchanged filename does not prove reuse either. Unknown impact or missing trustworthy evidence requires the affected checks. Cross-repository checks bind only affected contracts to fixed versions.
+
+Before implementing trigger or reuse changes, inspect server-required checks and map old coverage to new coverage. Keep required-check enforcement intact until an authorized migration is verified. Reused evidence must never be presented as a fresh run or fabricated success. Record implementation gaps in the existing task; measure actual runs and runner minutes before claiming cost savings.
 
 ## Select an execution resource
 
