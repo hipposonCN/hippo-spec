@@ -43,6 +43,8 @@ Open a file only when this turn needs it:
 - Domain terms or responsibility boundaries: [domain-modeling.md](references/domain-modeling.md)
 - Host PR, CI, browser, or wait/handoff: [generic-delivery.md](references/generic-delivery.md), then only the matching adapter
 - Ambiguous routing: [routing-examples.md](references/routing-examples.md)
+- Picking a craft skill for this step, or another spec tool beside this one: [skill-composition.md](references/skill-composition.md)
+- Installing or checking this package on a host: [hosts.md](references/hosts.md)
 - Substantive change to this method: [method-evaluation.md](references/method-evaluation.md)
 
 Preserve authorized behavior. Evidence may revise assumptions in place. A material conflict returns to the root or user. Update only affected feature-map entries in the same delivery. A new or changed verification procedure stays draft until one in-scope path has been run end to end.

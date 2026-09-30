@@ -1,0 +1,10 @@
+{
+  "source": "~/.local/share/hippo-spec",
+  "hosts": {
+    "codex": {"enabled": true},
+    "cursor": {"enabled": true},
+    "claude-code": {"enabled": true},
+    "kimi-code": {"enabled": false},
+    "grok": {"enabled": false}
+  }
+}
