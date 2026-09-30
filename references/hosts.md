@@ -20,6 +20,10 @@ Defaults below are the hosts' documented or observed user-level locations. Overr
 | Kimi Code | `~/.kimi-code/skills/hippo-spec` | `~/.kimi-code/AGENTS.md` | file | none; generic only |
 | Grok | none | Custom instructions in the Grok app | UI | none; generic only |
 
+Codex and Kimi Code also scan `~/.agents/skills`. Do not keep the source checkout there, and do not install the same skill into both `~/.agents/skills` and `~/.codex/skills`, or those hosts discover it twice. Shared third-party skills belong in `~/.agents/skills` once, linked into hosts that do not scan it (Claude Code, Cursor).
+
+"Grok" here is the Grok chat app with local tools, which has no skill directory. Grok Build, the CLI, reads `~/.grok/skills`; add it to a profile with `package_dir` and `entry` overrides if you use it.
+
 For a file entry the script writes the pointer between `hippo-spec:pointer` markers and leaves the rest of the file alone. If the file already mentions Hippo Spec outside the markers, it reports that instead of writing a second pointer. For a UI entry it prints the pointer to paste.
 
 A host without a package directory reads the method by path: its pointer names the pinned checkout. The project `AGENTS.md` remains its only automatic entry.
