@@ -14,6 +14,8 @@ def validate(root: Path) -> list[str]:
         "agents/openai.yaml", "references/routing-examples.md",
         "references/host-pointer.md", "references/generic-delivery.md",
         "references/cursor-delivery.md", "references/codex-delivery.md",
+        "references/hosts.md", "references/skill-composition.md",
+        "scripts/install_hosts.py", "profiles/example.json",
     ):
         if not (root / relative).is_file():
             errors.append(f"Missing package file: {relative}")

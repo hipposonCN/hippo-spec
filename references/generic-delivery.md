@@ -4,7 +4,7 @@ Use when the authorized target needs a reviewable PR, CI readback, user-path ver
 
 - Cursor: [cursor-delivery.md](cursor-delivery.md)
 - Codex: [codex-delivery.md](codex-delivery.md)
-- Any other host, or a host missing a needed job: stay on this file and disclose the gap
+- Any other host, or a host missing a needed job: stay on this file and disclose the gap. [hosts.md](hosts.md) lists each host's entry and adapter status.
 
 This adapter does not create a scheduler, a second task store, or product rules. Carry [hippo_spec_context](../SKILL.md#hand-off). No worktree is isolated merely because another thread exists.
 

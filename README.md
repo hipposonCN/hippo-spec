@@ -42,6 +42,8 @@ Hippo Spec 是可跨 Agent 使用的方法包。它把任务范围、现有 Spec
 | 判断修改 Skill 后是否更可靠 | [方法行为评测](references/method-evaluation.md) | 固定任务与隔离输入，检查真实动作和产物；不凭 Agent 自述打分 |
 | 难定位的 Bug / 领域边界问题 | [诊断](references/diagnosing-bugs.md) / [领域建模](references/domain-modeling.md) | 最小复现、检验假设，或明确术语与责任边界 |
 | 接续已有 OpenSpec 或其他规范记录 | [规范维护](references/full-lifecycle.md) | 更新有效记录，不重新初始化流程或清扫无关历史任务 |
+| 和 OpenSpec、Matt Pocock skills 等一起用 | [组合规则](references/skill-composition.md) | 各管一层；手艺类 skill 按场景自动建议，接管流程的 skill 不并装 |
+| 在多个 Agent 上安装、检查漂移 | [宿主入口](references/hosts.md) | 一份固定源，按 profile 装到各宿主，`--check` 报漂移 |
 
 这些入口按需读取，不是每个任务都要走一遍的清单。普通文案修改不创建任务体系、验证 Skill 或 Agent 团队。
 
@@ -108,7 +110,7 @@ python3 scripts/prepare_method_case.py ci-repair --output /tmp/hippo-cli
 
 把生成的 `request.txt`、`workspace/` 和固定方法版本交给新 Agent；协调者保留 `assessment.json`，检查实际命令、差异和结果。详细操作和清理见[行为评测方法](references/method-evaluation.md)。
 
-**生成器和它的单元测试不会调用模型。**本地修复案例不等于真实 GitHub CI 失败接续；一次方法包案例不等于 Research OS / Claim Apply 验收。实际执行了哪些案例、哪些接续方式已验证，以对应 PR/Release 证据为准。没有受控前后比较时，不宣称提效比例或可靠性提升。
+**生成器和它的单元测试不会调用模型。**本地修复案例不等于真实 GitHub CI 失败接续；一次方法包案例不等于具体项目的业务验收。实际执行了哪些案例、哪些接续方式已验证，以对应 PR/Release 证据为准。没有受控前后比较时，不宣称提效比例或可靠性提升。
 
 维护本包的确定性检查：
 
@@ -144,11 +146,31 @@ npx skills@latest add hipposonCN/hippo-spec
 
 `skip` 停在 pointer。不要把 `SKILL.md` 或 reference 树贴进 `AGENTS.md` / Cursor user rule / `CLAUDE.md`。
 
+## 和其他规范工具、skill 一起用
+
+Hippo Spec 只做**协议层**：模式、权威、所有权、交接、证据和收口。行为记录沿用项目已有格式（常见是 OpenSpec 目录），做好某一步交给手艺类 skill，真正拦住坏改动的是 CI。
+
+- **OpenSpec**：保留 `openspec/specs`、`openspec/changes` 文档格式；不要同时用它的 propose/apply/archive 命令驱动流程。需要结构校验时，把 `openspec validate --strict` 放进 CI。
+- **Matt Pocock skills 等手艺类 skill**：只装做单步的那些（如 `tdd`、`prototype`、`research`、`grill-me`）。内核按当前模式和场景建议用哪一个，不用每次手动点名；标了 `disable-model-invocation` 的由 Agent 直接打开或询问你。自己管工单、交接或 PR 的 skill 不与本包并装。
+
+完整映射见 [组合规则](references/skill-composition.md)。
+
 ## 全局入口与更新
 
-在宿主现有的短入口文件里只放 [宿主 pointer](references/host-pointer.md) 的那段文字。Codex 用 `~/.codex/AGENTS.md`；Cursor 用 user rule，方法包装在 `~/.cursor/skills/hippo-spec`。项目规则仍由项目提供。
+**一份源，多个宿主。** 把本仓固定版本 checkout 到任何宿主都不会扫描的位置（例如 `~/.local/share/hippo-spec`），再用安装脚本装到各宿主：
 
-不同宿主的发现目录、线程 API 和权限不同，按实际能力适配。已运行任务不因方法发布而静默更换约定版本。本地副本的改进通过本仓 PR/Release 回收，更新后核对固定版本；只改一台机器不能声称所有 Agent 已同步。没有 Cursor 与 Codex 的内核 transcript 时，不宣称跨宿主已经好用。
+```bash
+cp profiles/example.json ~/.agents/hippo-spec.profile.json
+python3 scripts/install_hosts.py            # 只预览
+python3 scripts/install_hosts.py --apply    # 安装包与入口 pointer
+python3 scripts/install_hosts.py --check    # 报告漂移，有漂移时退出码为 1
+```
+
+脚本默认复制并写入 `.hippo-spec-pin`；文件型入口（Codex、Claude Code、Kimi Code）在标记之间写 pointer，已有手写 Hippo Spec 段落时只提示、不重复写；界面型入口（Cursor User Rules、Grok 自定义指令）打印 pointer 供粘贴。各宿主位置与适配状态见 [宿主入口](references/hosts.md)。
+
+**公开包与个人配置分开。** 本仓只放通用方法、宿主通用位置和示例 profile，可直接 fork。你用哪些 Agent、各自角色、固定版本、项目规则写在自己的 profile 和项目 `AGENTS.md` 里，不提交回本仓。
+
+已运行任务不因方法发布而静默更换约定版本。本地副本的改进通过本仓 PR/Release 回收，不直接改宿主副本；`--check` 通过才能说各宿主已同步。没有宿主 transcript 时，不宣称该宿主已经好用。
 
 ## 来源与许可
 
